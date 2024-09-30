@@ -11,7 +11,7 @@ public class RemoveStocks
     public class Command : IRequest<Result>
     {
         public int ProductId { get; set; }
-        public int Amount { get; set; }
+        public int Quantity { get; set; }
     }
 
     public record class Result(int QuantityInStock);
@@ -28,7 +28,7 @@ public class RemoveStocks
     {
         public Validator()
         {
-            RuleFor(x => x.Amount).GreaterThan(0);
+            RuleFor(x => x.Quantity).GreaterThan(0);
         }
     }
 
@@ -50,12 +50,12 @@ public class RemoveStocks
             {
                 throw new ProductNotFoundException(request.ProductId);
             }
-            if (request.Amount > product.QuantityInStock)
+            if (request.Quantity > product.QuantityInStock)
             {
-                throw new NotEnoughStockException(product.QuantityInStock, request.Amount);
+                throw new NotEnoughStockException(product.QuantityInStock, request.Quantity);
             }
 
-            product.QuantityInStock -= request.Amount;
+            product.QuantityInStock -= request.Quantity;
             await _db.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<Result>(product);

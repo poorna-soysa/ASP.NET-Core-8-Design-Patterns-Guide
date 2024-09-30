@@ -76,7 +76,7 @@ public class StocksTest
     public class AddStocksTest : StocksTest
     {
         [Fact]
-        public async Task Should_increment_QuantityInStock_by_the_specified_amount()
+        public async Task Should_increment_QuantityInStock_by_the_specified_quantity()
         {
             // Arrange
             await using var application = new VerticalAppApplication();
@@ -88,7 +88,7 @@ public class StocksTest
             var result = await mediator.Send(new AddStocks.Command
             {
                 ProductId = 4,
-                Amount = 10
+                Quantity = 10
             });
 
             // Assert
@@ -112,7 +112,7 @@ public class StocksTest
             await Assert.ThrowsAsync<ProductNotFoundException>(() => mediator.Send(new AddStocks.Command
             {
                 ProductId = 6,
-                Amount = 1
+                Quantity = 1
             }));
         }
     }
@@ -120,7 +120,7 @@ public class StocksTest
     public class RemoveStocksTest : StocksTest
     {
         [Fact]
-        public async Task Should_decrement_QuantityInStock_by_the_specified_amount()
+        public async Task Should_decrement_QuantityInStock_by_the_specified_quantity()
         {
             // Arrange
             await using var application = new VerticalAppApplication();
@@ -132,7 +132,7 @@ public class StocksTest
             var result = await mediator.Send(new RemoveStocks.Command
             {
                 ProductId = 5,
-                Amount = 10
+                Quantity = 10
             });
 
             // Assert
@@ -156,7 +156,7 @@ public class StocksTest
             await Assert.ThrowsAsync<NotEnoughStockException>(() => mediator.Send(new RemoveStocks.Command
             {
                 ProductId = 5,
-                Amount = 11
+                Quantity = 11
             }));
         }
 
@@ -173,7 +173,7 @@ public class StocksTest
             await Assert.ThrowsAsync<ProductNotFoundException>(() => mediator.Send(new RemoveStocks.Command
             {
                 ProductId = 6,
-                Amount = 1
+                Quantity = 1
             }));
         }
     }
@@ -214,7 +214,7 @@ public class StocksTest
                     Times.Once()
                 );
                 Assert.Equal(5, addStocksCommand!.ProductId);
-                Assert.Equal(1, addStocksCommand!.Amount);
+                Assert.Equal(1, addStocksCommand!.Quantity);
             }
         }
         public class RemoveAsync : StocksControllerTest
@@ -251,7 +251,7 @@ public class StocksTest
                     Times.Once()
                 );
                 Assert.Equal(5, removeStocksCommand!.ProductId);
-                Assert.Equal(1, removeStocksCommand!.Amount);
+                Assert.Equal(1, removeStocksCommand!.Quantity);
             }
         }
     }

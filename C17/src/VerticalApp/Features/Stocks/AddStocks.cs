@@ -11,7 +11,7 @@ public class AddStocks
     public class Command : IRequest<Result>
     {
         public int ProductId { get; set; }
-        public int Amount { get; set; }
+        public int Quantity { get; set; }
     }
 
     public record class Result(int QuantityInStock);
@@ -28,7 +28,7 @@ public class AddStocks
     {
         public Validator()
         {
-            RuleFor(x => x.Amount).GreaterThan(0);
+            RuleFor(x => x.Quantity).GreaterThan(0);
         }
     }
 
@@ -51,7 +51,7 @@ public class AddStocks
                 throw new ProductNotFoundException(request.ProductId);
             }
 
-            product.QuantityInStock += request.Amount;
+            product.QuantityInStock += request.Quantity;
             await _db.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<Result>(product);
